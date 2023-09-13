@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	myZoo := zoo.MakeZoo(5)
+	myZoo := zoo.MakeZoo(108)
 
 	fmt.Printf("We have a great zoo, it has %d cages!\n", len(myZoo.Cages))
 	for _, cage := range myZoo.Cages {

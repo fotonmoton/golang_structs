@@ -7,20 +7,26 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 )
 
-const animalsString = "Dog,Cow,Cat,Horse,Donkey,Tiger,Lion,Panther,Leopard,Cheetah,Bear,Elephant,Polar,bear,Turtle,Tortoise,Crocodile,Rabbit,Porcupine,Hare,Hen,Pigeon,Albatross,Crow,Fish,Dolphin,Frog,Whale,Alligator,Eagle,Flying,squirrel,Ostrich,Fox,Goat,Jackal,Emu,Armadillo,Eel,Goose,Arctic,fox,Wolf,Beagle,Gorilla,Chimpanzee,Monkey,Beaver,Orangutan,Antelope,Bat,Badger,Giraffe,Hermit,Crab,Giant,Panda,Hamster,Cobra,Hammerhead,shark,Camel,Hawk,Deer,Chameleon,Hippopotamus,Jaguar,Chihuahua,King,Cobra,Ibex,Lizard,Koala,Kangaroo,Iguana,Llama,Chinchillas,Dodo,Jellyfish,Rhinoceros,Hedgehog,Zebra,Possum,Wombat,Bison,Bull,Buffalo,Sheep,Meerkat,Mouse,Otter,Sloth,Owl,Vulture,Flamingo,Racoon,Mole,Duck,Swan,Lynx,Monitor,lizard,Elk,Boar,Lemur,Mule,Baboon,Mammoth,Blue,whale,Rat,Snake,Peacock"
+const animalsString = "Dog,Cow,Cat,Horse,Donkey,Tiger,Lion,Panther,Leopard,Cheetah,Bear,Elephant,Bear,Turtle,Tortoise,Crocodile,Rabbit,Porcupine,Hare,Hen,Pigeon,Albatross,Crow,Fish,Dolphin,Frog,Whale,Alligator,Eagle,Squirrel,Ostrich,Fox,Goat,Jackal,Emu,Armadillo,Eel,Goose,Fox,Wolf,Beagle,Gorilla,Chimpanzee,Monkey,Beaver,Orangutan,Antelope,Bat,Badger,Giraffe,Hermit,Crab,Giant,Panda,Hamster,Cobra,Shark,Camel,Hawk,Deer,Chameleon,Hippopotamus,Jaguar,Chihuahua,King,Cobra,Ibex,Lizard,Koala,Kangaroo,Iguana,Llama,Chinchillas,Dodo,Jellyfish,Rhinoceros,Hedgehog,Zebra,Possum,Wombat,Bison,Bull,Buffalo,Sheep,Meerkat,Mouse,Otter,Sloth,Owl,Vulture,Flamingo,Racoon,Mole,Duck,Swan,Lynx,Monitor,lizard,Elk,Boar,Lemur,Mule,Baboon,Mammoth,Rat,Snake,Peacock"
 
 func MakeZoo(size int) *Zoo {
+	animalCount := len(strings.Split(animalsString, ","))
+	if size > animalCount {
+		fmt.Printf("I know only %[1]d pets, so generate a zoo with %[2]d animals is not possible. Please specify size of zoo less than %[2]d", animalCount, size)
+		os.Exit(1)
+	}
 	var Zoo = new(Zoo)
 	animalsList := generateAnimalsList(size)
 
 	for index, animal := range animalsList {
 		animalsList := getAnimalsInfo(animal)
+
 		Zoo.Cages = append(Zoo.Cages, settleAnimals(index+1, animalsList))
-		settleAnimals(index+1, animalsList)
 	}
 
 	return Zoo
@@ -36,9 +42,13 @@ func settleAnimals(number int, animals []Animal) *Cage {
 }
 
 func generateAnimalsList(count int) []string {
+	var slicedAnimalsList []string
 	completeAnimalsList := strings.Split(animalsString, ",")
-	startIndex := rand.Intn(len(completeAnimalsList))
-	slicedAnimalsList := completeAnimalsList[startIndex : startIndex+count]
+
+	for i := 0; i < count; i++ {
+		slicedAnimalsList = append(slicedAnimalsList, completeAnimalsList[rand.Intn(len(completeAnimalsList))])
+		fmt.Println(slicedAnimalsList)
+	}
 
 	return slicedAnimalsList
 }
