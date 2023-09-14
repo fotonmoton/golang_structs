@@ -8,6 +8,13 @@ type user struct {
 	Age     int
 }
 
+type User struct {
+	// Contains different field names with different types
+	Name    string
+	Surname string
+	Age     int
+}
+
 // Public struct
 type Post struct {
 	// Public field
